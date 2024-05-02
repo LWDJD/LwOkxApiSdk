@@ -54,7 +54,6 @@ public class Network {
         String httpHost = httpParts[0];
         int httpPort = Integer.parseInt(httpParts[1]);
 
-        System.out.println("Http代理服务器地址：" + httpHost + ":" + httpPort);
         // 创建一个ProxySelector对象，用于指定Http代理
         ProxySelector proxySelector = ProxySelector.of(new InetSocketAddress(httpHost, httpPort));
 
@@ -72,8 +71,6 @@ public class Network {
         // 发送请求，获取响应对象
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        //输出完整URI
-        System.out.println("httpGet获取："+request.uri());
         // 返回响应体的字符串内容
         return response.body();
     }
