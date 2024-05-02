@@ -34,8 +34,7 @@ public class PublicData {
         JSONArray dataArray = jsonObject.getJSONArray("data");
 
         // 将data数组中的每个元素转换为Map<String, Object>
-        return JSON.parseObject(dataArray.toJSONString(), new TypeReference<>() {
-        });
+        return JSON.parseObject(dataArray.toJSONString(), new TypeReference<>(){});
     }
 
     /**
