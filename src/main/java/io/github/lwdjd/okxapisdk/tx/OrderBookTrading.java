@@ -3,6 +3,8 @@ package io.github.lwdjd.okxapisdk.tx;
 import io.github.lwdjd.okxapisdk.account.Account;
 
 
+import java.util.Objects;
+
 import static io.github.lwdjd.okxapisdk.getdata.Network.postWithSignature;
 import static io.github.lwdjd.okxapisdk.getdata.PublicData.httpProxy;
 
@@ -105,7 +107,7 @@ public class OrderBookTrading {
         String requestPath = "/api/v5/trade/order";
         String str = null;
         try{
-            if(httpProxy!=null){
+            if(!Objects.equals(httpProxy, "")){
                 str=postWithSignature(requestPath, body , account , httpProxy);
             }
             else {
@@ -133,7 +135,7 @@ public class OrderBookTrading {
         String requestPath = "/api/v5/trade/cancel-order";
         String str = null;
         try{
-            if(httpProxy!=null){
+            if(!Objects.equals(httpProxy, "")){
                 str=postWithSignature(requestPath, body , account , httpProxy);
             }
             else {
