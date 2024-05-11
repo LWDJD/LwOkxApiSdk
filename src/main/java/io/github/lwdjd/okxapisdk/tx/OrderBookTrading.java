@@ -1,6 +1,8 @@
 package io.github.lwdjd.okxapisdk.tx;
 
-import static io.github.lwdjd.okxapisdk.account.TimeUtil.getCurrentIsoTimestamp;
+import io.github.lwdjd.okxapisdk.account.Account;
+
+
 import static io.github.lwdjd.okxapisdk.getdata.Network.postWithSignature;
 import static io.github.lwdjd.okxapisdk.getdata.PublicData.httpProxy;
 
@@ -10,44 +12,7 @@ import static io.github.lwdjd.okxapisdk.getdata.PublicData.httpProxy;
  */
 public class OrderBookTrading {
     //存储私有请求头信息
-    private String requestPath,apiKey, secretKey, passphrase;
-    private Boolean simulatedTrading;
 
-    /**
-     *
-     * @param requestPath 请求路径
-     * @param apiKey 你的KEY
-     * @param secretKey 你的密钥key
-     * @param passphrase 你的密码
-     * @param simulatedTrading 是否为模拟交易
-     */
-    public OrderBookTrading(String requestPath, String apiKey, String secretKey, String passphrase, Boolean simulatedTrading) {
-        this.requestPath = requestPath;
-        this.apiKey = apiKey;
-        this.secretKey = secretKey;
-        this.passphrase = passphrase;
-        this.simulatedTrading = simulatedTrading;
-    }
-    public OrderBookTrading setRequestPath(String requestPath) {
-        this.requestPath = requestPath;
-        return this;
-    }
-    public OrderBookTrading setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-        return this;
-    }
-    public OrderBookTrading setSecretKey(String secretKey) {
-        this.secretKey = secretKey;
-        return this;
-    }
-    public OrderBookTrading setPassphrase(String passphrase) {
-        this.passphrase = passphrase;
-        return this;
-    }
-    public OrderBookTrading setSimulatedTrading(Boolean simulatedTrading) {
-        this.simulatedTrading = simulatedTrading;
-        return this;
-    }
 
 
     /**
@@ -136,23 +101,49 @@ public class OrderBookTrading {
      * @param body POST内容主体
      * @return 响应结果
      */
-    public String trading(String body){
-        String timestamp = getCurrentIsoTimestamp();
+    public static String order(String body, Account account){
+        String requestPath = "/api/v5/trade/order";
         String str = null;
         try{
-            System.out.println("时间戳："+timestamp);
             if(httpProxy!=null){
-                str=postWithSignature(requestPath,apiKey,secretKey,passphrase,timestamp,body,simulatedTrading,httpProxy);
+                str=postWithSignature(requestPath, body , account , httpProxy);
             }
             else {
-                str=postWithSignature(requestPath,apiKey,secretKey,passphrase,timestamp,body,simulatedTrading);
+                str=postWithSignature(requestPath, body , account);
             }
         }catch (Exception e){
             e.printStackTrace();
             System.out.println("数据获取错误！！！");// 处理异常;
         }
         return str;
+    }
 
+    /**
+     * 请求参数
+     * 参数名	类型	    是否必须	描述
+     * instId	String	是	    产品ID，如 BTC-USDT
+     * ordId	String	可选	    订单ID， ordId和clOrdId必须传一个，若传两个，以ordId为主
+     * clOrdId	String	可选    	用户自定义ID
+     *
+     * @param body 交易参数
+     * @param account 交易账户
+     * @return 返回数据
+     */
+    public static String cancelOrder(String body, Account account){
+        String requestPath = "/api/v5/trade/cancel-order";
+        String str = null;
+        try{
+            if(httpProxy!=null){
+                str=postWithSignature(requestPath, body , account , httpProxy);
+            }
+            else {
+                str=postWithSignature(requestPath, body , account);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("数据获取错误！！！");// 处理异常;
+        }
+        return str;
     }
 
 }
